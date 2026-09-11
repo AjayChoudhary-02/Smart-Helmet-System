@@ -21,8 +21,6 @@ void setup()
 {
 //-----------------------------------------------------------------------------------
 //Begin serial communication: Arduino IDE (Serial Monitor)
-55
-Electronics and Communication Engineering 
 Serial.begin(115200);
 //-----------------------------------------------------------------------------------
 //Begin serial communication: SIM800L
@@ -46,8 +44,6 @@ void loop()
 while(sim800L.available()){
 Serial.println(sim800L.readString());
 }
-56
-Electronics and Communication Engineering 
 int flame_value = digitalRead(flame_sensor_pin);
 //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMM
@@ -74,8 +70,6 @@ else
 {
 digitalWrite(buzzer_pin,LOW);
 fire_flag = 0;
-57
-Electronics and Communication Engineering 
 }
 //MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMM
@@ -105,8 +99,6 @@ NNNNNNNNNNNNNNNNN
 NNNNN
 //NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 NNNNNNNNNNNNNNNNN
-58
-Electronics and Communication Engineering 
 NNNNN
 void make_multi_call()
 {
@@ -134,8 +126,6 @@ void send_sms(String text, String phone)
 Serial.println(&quot;sending sms....&quot;);
 delay(50);
 sim800L.print(&quot;AT+CMGF=1\r&quot;);
-59
-Electronics and Communication Engineering 
 delay(1000);
 sim800L.print(&quot;AT+CMGS=\&quot;&quot;+phone+&quot;\&quot;\r&quot;);
 delay(1000);
