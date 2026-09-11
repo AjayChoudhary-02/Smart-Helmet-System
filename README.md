@@ -22,8 +22,8 @@ measure through an integrated **alcohol detection** unit. An MQ-3 sensor is
 utilized to monitor the rider’s breath; if alcohol levels exceed the permissible 
 limit, the system triggers a relay module to instantly shut down the bike's 
 ignition, preventing the intoxicated individual from operating the vehicle. 
-This dual-layered approach—combining automated emergency alerts with 
-enforced sobriety—offers a comprehensive safety mechanism. The project 
+This dual-layered approach combining automated emergency alerts with 
+enforced sobriety offers a comprehensive safety mechanism. The project 
 demonstrates a practical application of embedded systems to enhance road 
 safety, reduce emergency response times, and ultimately save lives by 
 preventing hazardous driving conditions.
