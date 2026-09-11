@@ -1,0 +1,161 @@
+#include &lt;SoftwareSerial.h&gt;
+//Alarm reciever&#39;s phone number with country code
+const String PHONE_1 = &quot;+918287212471&quot;;
+const String PHONE_2 = &quot;&quot;; //optional
+const String PHONE_3 = &quot;&quot;; //optional
+#define rxPin 2
+#define txPin 3
+SoftwareSerial sim800L(rxPin,txPin);
+#define flame_sensor_pin 5
+//MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMM
+MMMMMMMMMMMMMMMMMM
+//MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMM
+MMMMMMMMMMMMMMMMMM
+#define buzzer_pin 4
+//MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMM
+MMMMMMMMMMMMMMMMMM
+void setup()
+{
+//-----------------------------------------------------------------------------------
+//Begin serial communication: Arduino IDE (Serial Monitor)
+55
+Electronics and Communication Engineering 
+Serial.begin(115200);
+//-----------------------------------------------------------------------------------
+//Begin serial communication: SIM800L
+sim800L.begin(9600);
+//-----------------------------------------------------------------------------------
+pinMode(flame_sensor_pin, INPUT);
+//-----------------------------------------------------------------------------------
+pinMode(buzzer_pin, OUTPUT);
+digitalWrite(buzzer_pin,LOW);
+//----------------------------------------------------------------------------------
+Serial.println(&quot;Initializing...&quot;);
+//Once the handshake test is successful, it will back to OK
+sim800L.println(&quot;AT&quot;);
+delay(1000);
+sim800L.println(&quot;AT+CMGF=1&quot;);
+delay(1000);
+//-----------------------------------------------------------------------------------
+}
+void loop()
+{
+while(sim800L.available()){
+Serial.println(sim800L.readString());
+}
+56
+Electronics and Communication Engineering 
+int flame_value = digitalRead(flame_sensor_pin);
+//MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMM
+MMMMMMMMMMMMMMMMMM
+//The fire is detected, trigger Alarm and send sms
+if(flame_value == LOW)
+{
+digitalWrite(buzzer_pin,HIGH);
+//----------------------------------------------------------------
+if(fire_flag == 0)
+{
+Serial.println(&quot;Accident Detected.&quot;);
+fire_flag == 1;
+send_multi_sms();
+make_multi_call();
+}
+//----------------------------------------------------------------
+}
+//MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMM
+MMMMMMMMMMMMMMMMMM
+//No fire is detected, turn OFF Alarm
+else
+{
+digitalWrite(buzzer_pin,LOW);
+fire_flag = 0;
+57
+Electronics and Communication Engineering 
+}
+//MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMM
+MMMMMMMMMMMMMMMMMM
+}
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+NNNNN
+void send_multi_sms()
+{
+if(PHONE_1 != &quot;&quot;){
+Serial.print(&quot;Phone 1: &quot;);
+send_sms(&quot;Accident Detected.Locatoin is.lat28.632171,Long77.116582&quot;, 
+PHONE_1);
+}
+if(PHONE_2 != &quot;&quot;){
+Serial.print(&quot;Phone 2: &quot;);
+send_sms(&quot;Fire is Detected&quot;, PHONE_2);
+}
+if(PHONE_3 != &quot;&quot;){
+Serial.print(&quot;Phone 3: &quot;);
+send_sms(&quot;Fire is Detected&quot;, PHONE_3);
+}
+}
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+NNNNN
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+58
+Electronics and Communication Engineering 
+NNNNN
+void make_multi_call()
+{
+if(PHONE_1 != &quot;&quot;){
+Serial.print(&quot;Phone 1: &quot;);
+make_call(PHONE_1);
+}
+if(PHONE_2 != &quot;&quot;){
+Serial.print(&quot;Phone 2: &quot;);
+make_call(PHONE_2);
+}
+if(PHONE_3 != &quot;&quot;){
+Serial.print(&quot;Phone 3: &quot;);
+make_call(PHONE_3);
+}
+}
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+NNNNN
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+NNNNN
+void send_sms(String text, String phone)
+{
+Serial.println(&quot;sending sms....&quot;);
+delay(50);
+sim800L.print(&quot;AT+CMGF=1\r&quot;);
+59
+Electronics and Communication Engineering 
+delay(1000);
+sim800L.print(&quot;AT+CMGS=\&quot;&quot;+phone+&quot;\&quot;\r&quot;);
+delay(1000);
+sim800L.print(text);
+delay(100);
+sim800L.write(0x1A); //ascii code for ctrl-26 //Serial2.println((char)26); //ascii code 
+for ctrl-26
+delay(5000);
+}
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+NNNNN
+//NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+NNNNNNNNNNNNNNNNN
+NNNNN
+void make_call(String phone)
+{
+Serial.println(&quot;calling....&quot;);
+sim800L.println(&quot;ATD&quot;+phone+&quot;;&quot;);
+delay(20000); //20 sec delay
+sim800L.println(&quot;ATH&quot;);
+delay(1000); //1 sec delay
+}
